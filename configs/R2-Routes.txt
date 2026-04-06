@@ -1,0 +1,65 @@
+R2#show ip route
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+       ia - IS-IS inter area, * - candidate default, U - per-user static route
+       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP
+       + - replicated route, % - next hop override
+
+Gateway of last resort is not set
+
+      1.0.0.0/32 is subnetted, 1 subnets
+i L2     1.1.1.1 [115/20] via 10.12.0.1, 00:15:29, Ethernet1/0
+      2.0.0.0/32 is subnetted, 1 subnets
+C        2.2.2.2 is directly connected, Loopback0
+      3.0.0.0/32 is subnetted, 1 subnets
+i L2     3.3.3.3 [115/20] via 10.23.0.3, 00:15:29, Ethernet1/1
+      10.0.0.0/8 is variably subnetted, 4 subnets, 2 masks
+C        10.12.0.0/24 is directly connected, Ethernet1/0
+L        10.12.0.2/32 is directly connected, Ethernet1/0
+C        10.23.0.0/24 is directly connected, Ethernet1/1
+L        10.23.0.2/32 is directly connected, Ethernet1/1
+
+R2#show isis neighbors
+
+System Id      Type Interface   IP Address      State Holdtime Circuit Id
+R1             L2   Et1/0       10.12.0.1       UP    27       R2.01
+R3             L2   Et1/1       10.23.0.3       UP    8        R3.01
+R2#show isis topo
+R2#show isis topology
+
+
+IS-IS TID 0 paths to level-2 routers
+System Id            Metric     Next-Hop             Interface   SNPA
+R1                   10         R1                   Et1/0       ca01.05f3.001c
+R2                   --
+R3                   10         R3                   Et1/1       ca03.062f.001d
+
+R2#show mpls forwarding-table
+Local      Outgoing   Prefix           Bytes Label   Outgoing   Next Hop
+Label      Label      or Tunnel Id     Switched      interface
+18         Pop Label  1.1.1.1/32       3655          Et1/0      10.12.0.1
+19         Pop Label  3.3.3.3/32       3675          Et1/1      10.23.0.3
+
+R2#show clns protocol
+
+IS-IS Router: <Null Tag>
+  System Id: 0000.0000.0002.00  IS-Type: level-2
+  Manual area address(es):
+        49.0001
+  Routing for area address(es):
+        49.0001
+  Interfaces supported by IS-IS:
+        Ethernet1/1 - IP
+        Ethernet1/0 - IP
+        Loopback0 - IP
+  Redistribute:
+    static (on by default)
+  Distance for L2 CLNS routes: 110
+  RRR level: none
+  Generate narrow metrics: level-1-2
+  Accept narrow metrics:   level-1-2
+  Generate wide metrics:   none
+  Accept wide metrics:     none
